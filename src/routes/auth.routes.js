@@ -1,10 +1,17 @@
 const express = require('express');
   const router = express.Router();
   const authController = require('../controllers/authcontroller');
-  const User = require('../models/user');
+  const User = require('../models/User');
   const bcrypt = require('bcrypt');
 
   router.post('/login', authController.login);
+  router.get('/health', (req, res) => {
+  res.json({
+    status: 'OK',
+    service: 'hms-backend-node',
+    time: new Date().toISOString()
+  });
+});
 
   router.post('/signup', async (req, res) => {
     try {

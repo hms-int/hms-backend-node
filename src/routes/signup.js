@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/authcontroller');
-const User = require('../models/user');
+const User = require('../models/User');
 const bcrypt = require('bcrypt');
 
 router.post('/login', authController.login);

@@ -1,5 +1,5 @@
 require('dotenv').config();
-const express = require('express');
+const app= require('./src/app');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -8,21 +8,20 @@ const connectDB = require('./src/config/db');
 
 connectDB();
 
-const app = express();
 
-app.use(cors({
+/*app.use(cors({
   origin: 'http://localhost:5173', 
   methods: ['GET', 'POST', 'PUT', 'DELETE'], 
   credentials: true, 
-}));
+}));*/
 
-app.use(bodyParser.json());
+//app.use(bodyParser.json());
 
 const patientRoutes = require('./src/routes/patient');
 const deptRoutes = require('./src/routes/dept');
-const doctorRoutes = require('./src/routes/doctorroutes');
+const doctorRoutes = require('./src/routes/doctor.routes');
 const appointmentRoutes = require('./src/routes/appointment');
-const authRoutes = require('./src/routes/authroutes');
+const authRoutes = require('./src/routes/auth.routes');
 const signupRoutes = require('./src/routes/signup');
 const adminRoutes = require('./src/routes/adminroutes');
 
