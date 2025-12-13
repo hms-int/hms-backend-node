@@ -1,148 +1,78 @@
-HMS Backend – Node.js (Open Source)
+# HMS Backend (Node.js)
 
-This repository contains the **open-source Node.js backend** for a **production-grade Hospital Management System (HMS)**.
+Open-source Node.js backend for a Hospital Management System (HMS), built for real hospital workflows and production use.
 
-The system is designed with **real hospital workflows**, **security**, and **scalability** in mind, suitable for on-premise deployment (LAN) as well as future cloud scaling.
+This repository contains **only the Node.js / Express backend**. Any Java Spring Boot services referenced are **external and closed source**.
 
 ---
 
-## Scope of This Repository
+## What’s Included
 
-**Included (Open Source)**
-
-* Node.js backend (Express-based)
-* Authentication & Authorization (JWT + RBAC)
+* Node.js (Express) backend
+* JWT-based authentication with RBAC
 * Core HMS APIs (OPD, IPD, Billing, Rooms, Pharmacy, Lab)
-* Security, validation, and middleware layer
-* Caching integration (Redis)
-* Database integration (MongoDB + PostgreSQL)
-* Production-ready architecture patterns
+* MongoDB and PostgreSQL integration
+* Redis caching
+* Security and validation middleware
 
-**Not Included (Closed Source)**
+## Not Included
 
-* Java Spring Boot backend (used for heavy reports & analytics)
-* Proprietary hospital-specific business logic
-* Any internal or paid modules
-
-> **Important**
-> Any interaction references to a Java Spring Boot service are **external integrations only**.
-> That backend is **closed source** and **not part of this repository**.
+* Java Spring Boot backend
+* Advanced reporting and analytics
+* Proprietary or hospital-specific logic
 
 ---
 
 ## Tech Stack
 
-### Core
-
-* **Node.js**
-* **Express.js**
-
-### Security
-
-* `bcrypt` – password hashing
-* `jsonwebtoken` – JWT-based authentication
-* `helmet` – HTTP security headers
-* `cors` – controlled cross-origin access
-
-### Databases
-
-* **MongoDB** – flexible medical & patient records
-* **PostgreSQL** – transactional data (billing, rooms, relations)
-
-### Caching & Performance
-
-* **Redis** – real-time cache (bed status, dashboards)
-
-### Utilities
-
-* `dotenv` – environment configuration
-* `morgan` – request logging
-* `express-validator` – request validation
+* **Node.js**, **Express**
+* **MongoDB**, **PostgreSQL**
+* **Redis**
+* `bcrypt`, `jsonwebtoken`, `helmet`, `cors`
+* `dotenv`, `morgan`, `express-validator`
 
 ---
 
-## Project Structure (Planned)
+## Project Structure
 
 ```
-hms-backend-node/
-│
-├── src/
-│   ├── config/          # DB, Redis, env configuration
-│   ├── controllers/     # Request handlers
-│   ├── services/        # Business logic
-│   ├── routes/          # API routes
-│   ├── models/          # MongoDB / PostgreSQL models
-│   ├── middlewares/     # Auth, RBAC, validation
-│   ├── utils/           # Helpers, constants
-│   └── app.js           # App bootstrap
-│
-├── .env.example
-├── package.json
-└── README.md
+src/
+ ├── config/
+ ├── controllers/
+ ├── services/
+ ├── routes/
+ ├── models/
+ ├── middlewares/
+ ├── utils/
+ └── app.js
 ```
 
 ---
 
-## Authentication & RBAC
+## Authentication
 
-The system uses:
+* JWT (HttpOnly cookies)
+* Role-Based Access Control
 
-* **JWT (HttpOnly Cookies)**
-* **Role-Based Access Control (RBAC)**
+Roles:
 
-Supported roles:
+* Admin, Doctor, Nurse, Reception, Pharmacy, Lab
 
-* Admin
-* Doctor
-* Nurse
-* Reception
-* Pharmacy
-* Lab
-
-RBAC is enforced at the middleware level for every protected route.
+RBAC is enforced via middleware.
 
 ---
 
-## Getting Started
-
-### Clone the Repository
+## Setup
 
 ```bash
 git clone https://github.com/hms-int/hms-backend-node.git
 cd hms-backend-node
-```
-
-### Install Dependencies
-
-```bash
 npm install
-```
-
-### Configure Environment
-
-Create `.env` from example:
-
-```bash
 cp .env.example .env
-```
-
-Update values:
-
-```
-PORT=5000
-JWT_SECRET=your_secret
-MONGO_URI=your_mongodb_connection
-POSTGRES_URI=your_postgres_connection
-REDIS_URL=___
-```
-
-### Run the Server
-
-```bash
 node server.js
 ```
 
-Server will start on:
+Server runs at:
 
 ```
 http://localhost:5000
@@ -150,74 +80,32 @@ http://localhost:5000
 
 ---
 
-## API Philosophy
+## API Design
 
-* REST-based APIs
+* REST APIs
 * Stateless services
 * Validation at entry point
-* Business logic isolated in services
-* Database logic abstracted from controllers
-
-This ensures:
-
-* Maintainability
-* Testability
-* Scalability
+* Business logic in services
+* Database logic isolated from controllers
 
 ---
 
-## Architecture Principles
+## Contributions
 
-* **Separation of concerns**
-* **Security-first**
-* **Production realism over tutorials**
-* **Designed for long-term hospital data (10+ years)**
+Contributions are welcome.
 
-This is **not a demo project** — it is architected to reflect real industry systems.
+* Fork the repo
+* Create a feature branch
+* Make clear commits
+* Open a Pull Request with a brief explanation
 
----
-
-## Open Source Contributions
-
-Contributions are **welcome and encouraged**.
-
-You can help with:
-
-* API improvements
-* Security hardening
-* Performance optimization
-* Documentation
-* Testing
-* Refactoring
-
-### How to Contribute
-
-1. Fork the repository
-2. Create a feature branch
-3. Make clear, atomic commits
-4. Open a Pull Request with explanation
-
-Please keep contributions **clean, professional, and documented**.
+Keep changes clean and well-documented.
 
 ---
 
-## License
+## License & Disclaimer
 
-This project is released under an **open-source license**.
-Closed-source components (Java Spring Boot backend) are **explicitly excluded**.
+This repository is open source.
+Closed-source components are excluded.
 
----
-
-## Disclaimer
-
-This repository provides **core backend infrastructure only**.
-Deployment, customization, and hospital-specific workflows must comply with **local medical data laws and regulations**.
-
----
-
-### Final Note
-
-This project aims to bridge the gap between **academic projects** and **real-world production systems**.
-
-If you are serious about backend engineering, scalability, and system design — you are in the right place.
-
+Ensure compliance with local medical data laws before production use.
