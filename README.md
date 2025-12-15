@@ -1,25 +1,28 @@
 # HMS Backend (Node.js)
 
-Open-source Node.js backend for a Hospital Management System (HMS), built for real hospital workflows and production use.
+Open-source Node.js backend for a Hospital Management System (HMS), designed around real hospital workflows and production constraints.
 
-This repository contains **only the Node.js / Express backend**. Any Java Spring Boot services referenced are **external and closed source**.
+This repository contains **only the Node.js / Express backend**. Any Java Spring Boot services referenced in the architecture are **external and closed source**.
 
 ---
 
 ## What’s Included
 
 * Node.js (Express) backend
-* JWT-based authentication with RBAC
+* JWT-based authentication with Role-Based Access Control (RBAC)
 * Core HMS APIs (OPD, IPD, Billing, Rooms, Pharmacy, Lab)
 * MongoDB and PostgreSQL integration
 * Redis caching
 * Security and validation middleware
+* **Docker & Docker Compose support for local development and deployment**
+
+---
 
 ## Not Included
 
 * Java Spring Boot backend
 * Advanced reporting and analytics
-* Proprietary or hospital-specific logic
+* Proprietary or hospital-specific business logic
 
 ---
 
@@ -30,6 +33,7 @@ This repository contains **only the Node.js / Express backend**. Any Java Spring
 * **Redis**
 * `bcrypt`, `jsonwebtoken`, `helmet`, `cors`
 * `dotenv`, `morgan`, `express-validator`
+* **Docker**, **Docker Compose**
 
 ---
 
@@ -56,13 +60,20 @@ src/
 
 Roles:
 
-* Admin, Doctor, Nurse, Reception, Pharmacy, Lab
+* Admin
+* Doctor
+* Nurse
+* Reception
+* Pharmacy
+* Lab
 
-RBAC is enforced via middleware.
+RBAC is enforced at the middleware level.
 
 ---
 
-## Setup
+## Running the Project
+
+### Option 1: Local Setup (Without Docker)
 
 ```bash
 git clone https://github.com/hms-int/hms-backend-node.git
@@ -80,32 +91,72 @@ http://localhost:5000
 
 ---
 
-## API Design
+### Option 2: Docker Compose (Recommended)
 
-* REST APIs
+The project now supports running the complete backend stack using **Docker Compose**, including databases and Redis.
+
+#### Prerequisites
+
+* Docker
+* Docker Compose
+
+#### Steps
+
+```bash
+git clone https://github.com/hms-int/hms-backend-node.git
+cd hms-backend-node
+cp .env.example .env
+docker compose up --build
+```
+
+This will:
+
+* Build the Node.js backend image
+* Start the API server
+* Start MongoDB, PostgreSQL, and Redis containers
+* Configure internal networking between services
+
+Once running, the API will be available at:
+
+```
+http://localhost:5000
+```
+
+To stop the containers:
+
+```bash
+docker compose down
+```
+
+---
+
+## API Design Principles
+
+* REST-based APIs
 * Stateless services
-* Validation at entry point
-* Business logic in services
-* Database logic isolated from controllers
+* Validation at request entry points
+* Business logic isolated in services
+* Database access abstracted from controllers
 
 ---
 
 ## Contributions
 
-Contributions are welcome.
+Contributions are welcome and expected to follow basic discipline.
 
-* Fork the repo
-* Create a feature branch
-* Make clear commits
-* Open a Pull Request with a brief explanation
+* Fork the repository
+* Create a feature or fix branch
+* Make clear, atomic commits
+* Open a Pull Request with a concise explanation
 
-Keep changes clean and well-documented.
+Keep changes minimal, readable, and documented.
 
 ---
 
 ## License & Disclaimer
 
 This repository is open source.
-Closed-source components are excluded.
 
-Ensure compliance with local medical data laws before production use.
+Closed-source and proprietary components are intentionally excluded.
+
+Ensure compliance with local medical data protection and healthcare regulations before any production deployment.
