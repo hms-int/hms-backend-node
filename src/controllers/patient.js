@@ -1,4 +1,4 @@
-const Patient = require('../models/patient');
+import Patient from '../models/patient.js';
 
 const createPatient = async (req, res) => {
   try {
@@ -54,7 +54,7 @@ const updatePatient = async (req, res) => {
   }
 };*/
 
-module.exports = {
+export {
   createPatient,
   getPatients,
   updatePatient,

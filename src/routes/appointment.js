@@ -1,6 +1,6 @@
-const express = require('express');
-const { protect, authorize } = require('../middleware/authmiddleware');
-const appointmentController = require('../controllers/aptcontrol');
+import express from 'express';
+import { protect, authorize } from '../middleware/authmiddleware.js';
+import * as appointmentController from '../controllers/aptcontrol.js';
 
 const router = express.Router();
 
@@ -39,4 +39,4 @@ router.put(
   appointmentController.deleteAppointment
 );*/
 
-module.exports = router;
+export default router;

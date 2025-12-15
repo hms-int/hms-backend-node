@@ -1,5 +1,5 @@
-const User = require('../models/User'); 
-const bcrypt = require('bcrypt');
+import User from '../models/User.js';
+import bcrypt from 'bcrypt';
 
 const createDoctor = async (req, res) => {
   try {
@@ -86,7 +86,7 @@ const updateDoctor = async (req, res) => {
   }
 };*/
 
-module.exports = {
+export {
   createDoctor,
   getDoctors,
   updateDoctor,

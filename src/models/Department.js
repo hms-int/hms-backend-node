@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from 'mongoose';
 
 const departmentSchema = new mongoose.Schema({
   dept: { 
@@ -17,4 +17,5 @@ departmentSchema.statics.getAllDepartments = function() {
   return this.find().sort({ dept: 1 });
 };
 
-module.exports = mongoose.model("Department", departmentSchema);
+const Department = mongoose.model("Department", departmentSchema);
+export default Department;

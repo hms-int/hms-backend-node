@@ -1,29 +1,22 @@
-require('dotenv').config();
-const app= require('./src/app');
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const connectDB = require('./src/config/db');
-
+import 'dotenv/config';
+import app from './src/app.js';
+import mongoose from 'mongoose';
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import connectDB from './src/config/db.js';
 
 connectDB();
 
+// app.use(cors());
+// app.use(bodyParser.json());
 
-/*app.use(cors({
-  origin: 'http://localhost:5173', 
-  methods: ['GET', 'POST', 'PUT', 'DELETE'], 
-  credentials: true, 
-}));*/
-
-//app.use(bodyParser.json());
-
-const patientRoutes = require('./src/routes/patient');
-const deptRoutes = require('./src/routes/dept');
-const doctorRoutes = require('./src/routes/doctor.routes');
-const appointmentRoutes = require('./src/routes/appointment');
-const authRoutes = require('./src/routes/auth.routes');
-const signupRoutes = require('./src/routes/signup');
-const adminRoutes = require('./src/routes/adminroutes');
+import patientRoutes from './src/routes/patient.js';
+import deptRoutes from './src/routes/dept.js';
+import doctorRoutes from './src/routes/doctor.routes.js';
+import appointmentRoutes from './src/routes/appointment.js';
+import authRoutes from './src/routes/auth.routes.js';
+import signupRoutes from './src/routes/signup.js';
+import adminRoutes from './src/routes/adminroutes.js';
 
 app.use('/api/patients', patientRoutes);
 app.use('/api/departments', deptRoutes);

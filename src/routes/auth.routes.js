@@ -1,8 +1,9 @@
-const express = require('express');
+  import express from 'express';
+  import * as authController from '../controllers/authcontroller.js';
+  import User from '../models/User.js';
+  import bcrypt from 'bcrypt';
+  
   const router = express.Router();
-  const authController = require('../controllers/authcontroller');
-  const User = require('../models/User');
-  const bcrypt = require('bcrypt');
 
   router.post('/login', authController.login);
   router.get('/health', (req, res) => {
@@ -27,4 +28,4 @@ const express = require('express');
     }
   });
 
-  module.exports = router;
+export default router;

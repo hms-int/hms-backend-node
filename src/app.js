@@ -1,9 +1,10 @@
-const express = require('express');
-const cors = require('cors');
-const morgan = require('morgan');
+import express from 'express';
+import cors from 'cors';
+import morgan from 'morgan';
 
-const authRoutes = require('./routes/auth.routes');
-const doctorRoutes = require('./routes/doctor.routes'); 
+import authRoutes from './routes/auth.routes.js';
+import doctorRoutes from './routes/doctor.routes.js';
+ 
 
 const app = express();
 
@@ -21,4 +22,4 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500).json({ error: err.message || 'Server error' });
 });
 
-module.exports = app;
+export default app;

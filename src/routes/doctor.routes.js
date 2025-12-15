@@ -1,7 +1,8 @@
-const express = require('express'); 
+import express from 'express';
+import { protect, authorize } from '../middleware/authmiddleware.js';
+import * as doctorController from '../controllers/doctor.controller.js';
+
 const router = express.Router();
-const doctorController = require('../controllers/doctor.controller');
-const { protect, authorize } = require('../middleware/authmiddleware');
 
 router.post('/', protect, authorize('admin'), doctorController.createDoctor);
 
@@ -13,4 +14,4 @@ router.put('/:id', protect, authorize('admin'), doctorController.updateDoctor);
 
 //router.delete('/:id', protect, authorize('admin'), doctorController.deleteDoctor);
 
-module.exports = router;
+export default router;

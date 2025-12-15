@@ -1,7 +1,9 @@
-const express = require('express');
+import express from 'express';
+import { protect, authorize } from '../middleware/authmiddleware.js';
+import * as patientController from '../controllers/patient.js';
+
 const router = express.Router();
-const patientController = require('../controllers/patient'); 
-const { protect, authorize } = require('../middleware/authmiddleware');
+
 
 router.get('/', protect, authorize('admin', 'doctor'), patientController.getPatients);
 
@@ -11,4 +13,4 @@ router.put('/:id', protect, authorize('admin', 'doctor'), patientController.upda
 
 //router.delete('/:id', protect, authorize('admin'), patientController.deletePatient);
 
-module.exports = router;
+export default router;

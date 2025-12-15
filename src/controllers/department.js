@@ -1,6 +1,6 @@
-const Department = require('../models/Department');
+import Department from '../models/Department.js';
 
-exports.createDepartment = async (req, res) => {
+export const createDepartment = async (req, res) => {
   try {
     const { dept, description } = req.body;
 
@@ -31,7 +31,7 @@ exports.createDepartment = async (req, res) => {
   }
 };
 
-exports.getDepartments = async (req, res) => {
+export const getDepartments = async (req, res) => {
   try {
     const departments = await Department.getAllDepartments();
     res.status(200).json({ success: true, count: departments.length, data: departments });
@@ -40,7 +40,7 @@ exports.getDepartments = async (req, res) => {
   }
 };
 
-exports.updateDepartment = async (req, res) => {
+export const updateDepartment = async (req, res) => {
   try {
     const { id } = req.params;
     const { dept, description } = req.body;
@@ -75,7 +75,7 @@ exports.updateDepartment = async (req, res) => {
   }
 };
 
-exports.deleteDepartment = async (req, res) => {
+export const deleteDepartment = async (req, res) => {
   try {
     const { id } = req.params;
 

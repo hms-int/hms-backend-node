@@ -1,5 +1,5 @@
-const Appointment = require('../models/appointment');
-const mongoose = require('mongoose');
+import Appointment from '../models/appointment.js';
+import mongoose from 'mongoose';
 
 const createAppointment = async (req, res) => {
   try {
@@ -107,7 +107,7 @@ const updateAppointment = async (req, res) => {
   }
 };*/
 
-module.exports = {
+export {
   createAppointment,
   getAppointments,
   getAppointmentById,
