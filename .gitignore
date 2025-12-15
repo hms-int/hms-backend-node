@@ -25,6 +25,8 @@ coverage
 
 .grunt
 
+pnpm-lock.yaml
+
 bower_components
 
 .lock-wscript
