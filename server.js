@@ -1,8 +1,6 @@
 import 'dotenv/config';
 import app from './src/app.js';
-import mongoose from 'mongoose';
-import bodyParser from 'body-parser';
-import cors from 'cors';
+//import bodyParser from 'body-parser';
 import connectDB from './src/config/db.js';
 
 connectDB();
