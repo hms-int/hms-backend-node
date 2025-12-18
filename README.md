@@ -66,6 +66,7 @@ Roles:
 * Reception
 * Pharmacy
 * Lab
+* Billing staff
 
 RBAC is enforced at the middleware level.
 
