@@ -37,7 +37,8 @@ const getAppointments = async (req, res) => {
     const appointments = await Appointment.find(query)
       .populate('patient', 'name email')
       .populate('doctor', 'name spec')
-      .populate('dept', 'dept');
+      .populate('dept', 'dept')
+      .lean();
 
     res.json(appointments);
   } catch (err) {
@@ -51,7 +52,8 @@ const getAppointmentById = async (req, res) => {
     const appointment = await Appointment.findById(req.params.id)
       .populate('patient', 'name email')
       .populate('doctor', 'name spec')
-      .populate('dept', 'dept');
+      .populate('dept', 'dept')
+      .lean();
 
     if (!appointment) return res.status(404).json({ message: 'Appointment not found' });
 
