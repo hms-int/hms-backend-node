@@ -10,8 +10,8 @@ router.get('/', protect, authorize('admin', 'doctor'), doctorController.getDocto
 
 router.put('/:id', protect, authorize('admin'), doctorController.updateDoctor);
 
-//router.put('/change-password', protect, authorize('doctor'), doctorController.changePassword);
+router.put('/change-password', protect, authorize('doctor'), doctorController.changePassword);
 
-//router.delete('/:id', protect, authorize('admin'), doctorController.deleteDoctor);
+router.delete('/:id', protect, authorize('admin'), doctorController.deleteDoctor);
 
 export default router;
