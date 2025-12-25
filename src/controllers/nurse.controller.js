@@ -1,4 +1,4 @@
-import User from "../models/User";
+import User from "../models/User.js";
 import bcrypt from "bcrypt";
 
 const createNurse= async (req, res) => {
@@ -35,6 +35,11 @@ const changePassword = async (req, res) => {
 const getNurses = async (req, res) => {
     try {
         const nurses=await User.find({ role: 'nurse' });
+
+        if(!nurses){
+            res.status(404).json({ message: 'Nurse not found' });
+        }
+
         res.json(nurses);
     } catch (err) {
         res.status(500).json({ message: err.message });
@@ -63,11 +68,28 @@ const updateNurse = async (req,res) =>{
     } catch(error) {
         res.status(400).json({ message: err.message });
     }
-};   
+};
+
+const deleteNurse =  async (req,res)=> {
+    try{
+      const { id }= req.params;
+
+      const nurse= await User.findOneAndDelete({ _id: id, role: 'nurse' });
+
+      if(!nurse){
+        return res.status(404).json({ message: 'Nurse not found'});
+      }
+
+      res.json({ message: 'Nurse deleted successfully'});
+    } catch(error){
+        res.status(500).json({ message: err.message});
+    }
+};
 
 export { 
     createNurse,
     changePassword,
     getNurses,
-    updateNurse
+    updateNurse,
+    deleteNurse
 };
