@@ -11,6 +11,6 @@ router.post('/patient', protect, authorize('admin', 'doctor'), patientController
 
 router.put('/:id', protect, authorize('admin', 'doctor'), patientController.updatePatient);
 
-//router.delete('/:id', protect, authorize('admin'), patientController.deletePatient);
+router.delete('/:id', protect, authorize('admin'), patientController.deletePatient);
 
 export default router;

@@ -38,7 +38,7 @@ const updatePatient = async (req, res) => {
   }
 };
 
-/*const deletePatient = async (req, res) => {
+const deletePatient = async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -52,11 +52,11 @@ const updatePatient = async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
-};*/
+};
 
 export {
   createPatient,
   getPatients,
   updatePatient,
-  //deletePatient
+  deletePatient
 };
