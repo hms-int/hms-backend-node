@@ -9,6 +9,7 @@ import adminRoutes from './routes/adminroutes.js';
 import doctorRoutes from './routes/doctor.routes.js';
 import nurseRoutes from './routes/nurse.routes.js';
 import receptionRoutes from './routes/reception.routes.js';
+import labTechnicianRoutes from './routes/lab.routes.js';
 
 import patientRoutes from './routes/patient.js';
 import deptRoutes from './routes/dept.js';
@@ -32,6 +33,7 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/users/doctors', doctorRoutes);
 app.use('/api/users/nurses', nurseRoutes);
 app.use('/api/users/receptionist', receptionRoutes);
+app.use('/api/users/lab-technician', labTechnicianRoutes);
 
 app.use('/api/patients', patientRoutes);
 app.use('/api/departments', deptRoutes);
