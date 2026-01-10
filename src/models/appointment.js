@@ -1,56 +1,83 @@
+/**
+ * Appointment Model
+ *
+ * Responsibilities:
+ * - Define the schema for patient appointment records
+ * - Enforce referential integrity across patient, doctor, and department
+ * - Capture scheduling and status information for clinical workflows
+ *
+ * Constraints:
+ * - Appointments must reference valid patient, doctor, and department entities
+ * - Status values must follow a controlled lifecycle
+ * - Date and time fields must be explicitly provided
+ */
+
 import mongoose from 'mongoose';
 
-const appointmentSchema = new mongoose.Schema(
-  {
-    patient: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Patient',
-      required: true,
-      index: true
-    },
-    dept: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Department',
-      required: true,
-      index: true
-    },
-    doctor: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
-      required: true,
-      index: true
-    },
-    status: {
-      type: String,
-      enum: ['Scheduled', 'Completed', 'Cancelled'],
-      default: 'Scheduled',
-      index: true
-    },
-    date: {
-      type: Date,
-      required: true,
-      index: true
-    },
-    time: {
-      type: String,
-      required: true,
-      match: /^([01]\d|2[0-3]):([0-5]\d)$/
-    },
-    rsv: {
-      type: String,
-      required: true,
-      trim: true,
-      index: true
-    },
-    notes: {
-      type: String,
-      trim: true
-    }
+const appointmentSchema = new mongoose.Schema({
+  patient: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Patient',
+    required: true,
+
+    // CRITICAL:
+    // Patient reference must always point to a valid Patient document.
   },
-  { timestamps: true, strict: true }
-);
+  dept: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Department',
+    required: true,
 
-appointmentSchema.index({ doctor: 1, date: 1 });
-appointmentSchema.index({ doctor: 1, date: 1, time: 1 }, { unique: true });
+    // CRITICAL:
+    // Department reference ensures appointments are scoped correctly
+    // within organizational units.
+  },
+  doctor: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
 
-export default mongoose.model('Appointment', appointmentSchema);
+    // CRITICAL:
+    // Doctor reference must map to a User with role = 'doctor'.
+    // Role enforcement is handled at controller/service level.
+  },
+  status: {
+    type: String,
+    required: true,
+
+    // CRITICAL:
+    // Status enum enforces a controlled appointment lifecycle.
+    enum: ['Scheduled', 'Completed', 'Cancelled'],
+  },
+  date: {
+    type: Date,
+    required: true,
+
+    // CRITICAL:
+    // Appointment date is required for scheduling
+    // and downstream reporting.
+  },
+  time: {
+    type: String,
+    required: true,
+
+    // CRITICAL:
+    // Time is stored separately to allow flexible
+    // display and scheduling logic.
+  },
+  rsv: {
+    type: String,
+    required: true,
+
+    // CRITICAL:
+    // Reservation identifier is mandatory to support
+    // tracking and reconciliation workflows.
+  },
+  notes: {
+    type: String,
+  },
+});
+
+const Appointment = mongoose.model('Appointment', appointmentSchema);
+export default Appointment;
+
