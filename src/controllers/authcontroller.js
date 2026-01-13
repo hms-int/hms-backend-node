@@ -19,7 +19,11 @@ export const login = async (req, res) => {
       return res.status(401).json({ success: false, message: 'Invalid password' });
     }
 
-    if (user.role.toLowerCase() === 'doctor' && user.status !== 'Active') {
+    // if (user.role.toLowerCase() === 'doctor' && user.status !== 'Active') {
+    //   return res.status(403).json({ success: false, message: "Your account is currently inactive. Kindly reach out to the admin for support." });
+    // }
+
+    if (user.status !== 'Active') {
       return res.status(403).json({ success: false, message: "Your account is currently inactive. Kindly reach out to the admin for support." });
     }
 
