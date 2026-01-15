@@ -19,12 +19,17 @@ import appointmentRoutes from './routes/appointment.js';
 const app = express();
 
 // Global middleware
-app.use(cors());
+app.use(cors({
+  origin: "*",
+  credentials: true
+}));
 app.use(express.json());
 app.use(morgan('dev'));
 
-app.get('/', (req, res) => {
-  res.json({ ok: true });
+app.get('/', (_req, res) => {
+  res.status(200).json({
+    message: "Backend is online"
+  })
 });
 
 app.use('/api/auth', authRoutes);
@@ -41,10 +46,10 @@ app.use('/api/patients', patientRoutes);
 app.use('/api/departments', deptRoutes);
 app.use('/api/appointments', appointmentRoutes);
 
-app.use((err, req, res, next) => {
+app.use((err, _req, res, _next) => {
   console.error(err);
   res.status(err.status || 500).json({
-    error: err.message || 'Server error'
+    error: err.message || 'Internal Server Error'
   });
 });
 
