@@ -24,12 +24,25 @@ app.use(cors({
   credentials: true
 }));
 app.use(express.json());
-app.use(morgan('dev'));
+
+app.use(morgan('dev', {
+  skip: (req) => req.url === '/health'
+  })
+);
 
 app.get('/', (_req, res) => {
   res.status(200).json({
     message: "Backend is online"
   })
+});
+
+app.get('/health', (_req, res) => {
+  res.status(200).json({
+    status: "ok",
+    service: "hms-backend",
+    uptime: process.uptime(),
+    timestamp: new Date().toISOString()
+  });
 });
 
 app.use('/api/auth', authRoutes);
