@@ -6,6 +6,13 @@ export const login = async (req, res) => {
   try {
     const { role, email, password } = req.body;
 
+    if (!role || !email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid Request",
+      });
+    }
+
     const user = await User.findOne({
       email: { $regex: new RegExp(`^${email}$`, 'i') },
       role: { $regex: new RegExp(`^${role}$`, 'i') },
