@@ -1,85 +1,52 @@
-import User from '../models/User.js';
-import bcrypt from 'bcrypt';
+import labService from "../services/lab.service.js";
 
-const createLabtechnician = async (req,res) => {
+const createLabtechnician = async (req, res) => {
     try {
-        const password = req.body.password || 'labtech@123';
-        const hashedPassword = await bcrypt.hash(password, 10);
-
-        const technician = new User({
-            ...req.body,
-            password: hashedPassword,
-            role: 'lab-technician'
-        });
-
-        await technician.save();
+        const technician = await labService.createLabtechnician(req.body);
         res.status(201).json(technician);
     } catch (err) {
-        res.status(400).json({ message: err.message});
+        res.status(400).json({ message: err.message });
     }
 };
 
-const changePassword = async (req,res) => {
+const changePassword = async (req, res) => {
     try {
-        const technician = await User.findById(req.user.id);
         const { oldPassword, newPassword } = req.body;
-
-        const isMatch = await bcrypt.compare(oldPassword, technician.password);
-        if (!isMatch) return res.status(400).json({ message: 'Old password is incorrect' });
-
-        technician.password = await bcrypt.hash(newPassword, 10);
-        await technician.save();
-
-        res.status(200).json({ message: 'Password updated successfully'});
+        const result = await labService.changePassword(
+            req.user.id,
+            oldPassword,
+            newPassword
+        );
+        res.status(200).json(result);
     } catch (err) {
-        res.status(500).json({ message: err.message });
+        res.status(400).json({ message: err.message });
     }
 };
 
-const getLabtechnicians = async (req,res) => {
+const getLabtechnicians = async (req, res) => {
     try {
-        const technician = await User.find({ role: 'lab-technician' });
+        const technician = await labService.getLabtechnicians();
         res.json(technician);
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
 };
 
-const updateLabtechnician = async (req,res) => {
+const updateLabtechnician = async (req, res) => {
     try {
         const { id } = req.params;
-        
-        if (req.body.password) {
-            req.body.password = await bcrypt.hash(req.body.password, 10);
-        }
-
-        const technician = await User.findOneAndUpdate(
-            { _id: id, role: 'lab-technician' },
-            req.body,
-            { new: true, runValidators: true }
-        );
-
-        if (!technician) {
-            return res.status(404).json({ message: 'Lab technician not found'});
-        }
-
+        const result = await labService.updateLabtechnician(id, req.body);
         res.json(technician);
     } catch (err) {
         res.status(400).json({ message: err.message });
     }
 };
 
-const deleteLabtechnician = async (req,res) => {
+const deleteLabtechnician = async (req, res) => {
     try {
         const { id } = req.params;
-
-        const technician = await User.findOneAndDelete({ _id: id, role: 'lab-technician' });
-
-        if(!technician) {
-            return res.status(404).json({ message: 'Lab technician not found' });
-        }
-
-        res.json({ message: 'Lab technician deleted successfully' });
+        const result = await labService.deleteLabtechnician(id);
+        res.json(result);
     } catch (err) {
         res.status(500).json({ message: err.message });
     }

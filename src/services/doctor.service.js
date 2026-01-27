@@ -12,9 +12,9 @@ const createDoctor = async (data) => {
     });
 
     return await doctor.save();
-}
+};
 
-const changePassword = async (useImperativeHandle, oldPassword, newPassword) => {
+const changePassword = async (oldPassword, newPassword) => {
     const doctor = await User.findById(userId);
     if(!doctor) throw new Error('Doctor not found');
 
@@ -54,7 +54,7 @@ const deleteDoctor = async (id) => {
     return { message: 'Doctor deleted successfully' };
 };
 
-export {
+export default{
   createDoctor,
   changePassword,
   getDoctors,
