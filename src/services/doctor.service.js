@@ -14,7 +14,7 @@ const createDoctor = async (data) => {
     return await doctor.save();
 };
 
-const changePassword = async (oldPassword, newPassword) => {
+const changePassword = async (userId, oldPassword, newPassword) => {
     const doctor = await User.findById(userId);
     if(!doctor) throw new Error('Doctor not found');
 

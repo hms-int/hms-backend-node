@@ -15,7 +15,7 @@ const createLabtechnician = async (data) => {
         return await technician.save();
 };
 
-const changePassword = async (oldPassword, newPassword) => {
+const changePassword = async (userId,oldPassword, newPassword) => {
     const technician = await User.findById(userId);
     if(!technician) throw new Error('Lab technician not found');
 
