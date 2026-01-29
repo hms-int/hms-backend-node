@@ -8,7 +8,7 @@ const createDoctor = async (data) => {
     const doctor = new User({
         ...data,
         password: hashedPassword,
-        role: 'Doctor',
+        role: 'doctor',
     });
 
     return await doctor.save();

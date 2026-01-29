@@ -5,17 +5,14 @@ services:
     container_name: hms-backend-node
     build:
       context: .
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
     ports:
       - "5000:5000"
     env_file:
       - .env
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
-    command: npm run dev
     depends_on:
       - mongo
+    restart: unless-stopped
     networks:
       - hms-network
 
