@@ -11,7 +11,12 @@ const createPharmacist = async (data) => {
        role: 'pharmacist', 
     });
 
-    return await pharmacist.save();
+    await pharmacist.save();
+
+    return {
+        success: true,
+        message: 'Pharmacist created successfully'
+    };
 };
 
 const changePassword = async (userId, oldPassword, newPassword) => {

@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post('/', protect, authorize('admin'), receptionController.creatReceptionist);
 
-router.get('/', protect, authorize('admin', 'receptionist'), receptionController.getReceptionist);
+router.get('/', protect, authorize('admin', 'receptionist'), receptionController.getReceptionists);
 
 router.put('/change-password', protect, authorize('receptionist'), receptionController.changePassword);
 

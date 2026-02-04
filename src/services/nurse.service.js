@@ -11,7 +11,12 @@ const createNurse = async (data) => {
         role: 'nurse',
     });
 
-    return await nurse.save();
+    await nurse.save();
+
+    return {
+        success: true,
+        message: 'Nurse created successfully'
+    };
 };
 
 const changePassword = async (userId, oldPassword, newPassword) => {

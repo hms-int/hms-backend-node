@@ -1,6 +1,5 @@
 import User from '../models/User.js';
 import bcrypt from 'bcrypt';
-import doctorService from './doctor.service.js';
 
 const createLabtechnician = async (data) => {
         const password = data.password || 'labtech@123';
@@ -12,7 +11,12 @@ const createLabtechnician = async (data) => {
             role: 'lab-technician'
         });
 
-        return await technician.save();
+        await technician.save();
+
+        return {
+            success: true,
+            message: 'Lab technician created successfully'
+        };
 };
 
 const changePassword = async (userId,oldPassword, newPassword) => {

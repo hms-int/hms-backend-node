@@ -4,15 +4,21 @@ import bcrypt from 'bcrypt';
 const createDoctor = async (data) => {
     const password = data.password || 'doctor@123';
     const hashedPassword = await bcrypt.hash(password, 10);
-    
+
     const doctor = new User({
         ...data,
         password: hashedPassword,
         role: 'doctor',
     });
 
-    return await doctor.save();
+    await doctor.save();
+
+    return {
+        success: true,
+        message: 'Doctor created successfully',
+    };
 };
+
 
 const changePassword = async (userId, oldPassword, newPassword) => {
     const doctor = await User.findById(userId);
