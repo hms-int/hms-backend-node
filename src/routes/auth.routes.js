@@ -2,6 +2,7 @@
   import * as authController from '../controllers/authcontroller.js';
   import User from '../models/User.js';
   import bcrypt from 'bcrypt';
+  import { sendOTP, validateOTP } from '../controllers/authcontroller.js';
   
   const router = express.Router();
 
@@ -26,5 +27,8 @@
       res.status(500).json({ message: 'Error creating user', error: error.message });
     }
   });
+
+  router.post('/send-otp', sendOTP);
+  router.post('/verify-otp', validateOTP);
 
 export default router;

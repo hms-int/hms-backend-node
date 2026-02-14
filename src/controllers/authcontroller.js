@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
+import { createAndSendOTP, verifyOTP } from '../services/otp.service.js';
 
 export const login = async (req, res) => {
   try {
@@ -54,5 +55,36 @@ export const login = async (req, res) => {
   } catch (error) {
     console.error('Login error:', error);
     res.status(500).json({ success: false, message: 'Server error' });
+  }
+};
+
+export const sendOTP = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+
+    await createAndSendOTP(email);
+
+    res.status(200).json({
+      success: true,
+      message: 'OTP sent successfully'
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+export const validateOTP = async (req, res, next) => {
+  try {
+    const { email, otp } = req.body;
+
+    await verifyOTP(email, otp);
+
+    res.status(200).json({
+      success: true,
+      message: 'OTP verified successfully'
+    });
+  } catch (error) {
+    next(error);
   }
 };
