@@ -3,6 +3,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 
 import authRoutes from './routes/auth.routes.js';
+import paymentRoutes from './routes/payment.routes.js';
 import signupRoutes from './routes/signup.js';
 import adminRoutes from './routes/adminroutes.js';
 
@@ -46,6 +47,7 @@ app.get('/health', (_req, res) => {
 });
 
 app.use('/api/auth', authRoutes);
+app.use('/api/payment', paymentRoutes);
 app.use('/api/signup', signupRoutes);
 app.use('/api/admin', adminRoutes);
 
