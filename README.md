@@ -10,7 +10,7 @@ This repository contains **only the Node.js / Express backend**.
 
 * Node.js (Express) backend
 * JWT-based authentication with Role-Based Access Control (RBAC)
-* Core HMS APIs (OPD, IPD, Billing, Rooms, Pharmacy, Lab)
+* Core HMS APIs (OPD, IPD(Basic), Billing)
 * MongoDB
 * Security and validation middleware
 * **Docker & Docker Compose support for local development and deployment**
