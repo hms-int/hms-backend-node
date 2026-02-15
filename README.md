@@ -2,7 +2,7 @@
 
 Open-source Node.js backend for a Hospital Management System (HMS), designed around real hospital workflows and production constraints.
 
-This repository contains **only the Node.js / Express backend**. Any Java Spring Boot services referenced in the architecture are **external and closed source**.
+This repository contains **only the Node.js / Express backend**.
 
 ---
 
@@ -11,8 +11,7 @@ This repository contains **only the Node.js / Express backend**. Any Java Spring
 * Node.js (Express) backend
 * JWT-based authentication with Role-Based Access Control (RBAC)
 * Core HMS APIs (OPD, IPD, Billing, Rooms, Pharmacy, Lab)
-* MongoDB and PostgreSQL integration
-* Redis caching
+* MongoDB
 * Security and validation middleware
 * **Docker & Docker Compose support for local development and deployment**
 
@@ -29,8 +28,7 @@ This repository contains **only the Node.js / Express backend**. Any Java Spring
 ## Tech Stack
 
 * **Node.js**, **Express**
-* **MongoDB**, **PostgreSQL**
-* **Redis**
+* **MongoDB**
 * `bcrypt`, `jsonwebtoken`, `helmet`, `cors`
 * `dotenv`, `morgan`, `express-validator`
 * **Docker**, **Docker Compose**
@@ -62,10 +60,8 @@ Roles:
 
 * Admin
 * Doctor
-* Nurse
 * Reception
-* Pharmacy
-* Lab
+* Patient
 * Billing staff
 
 RBAC is enforced at the middleware level.
@@ -114,7 +110,7 @@ This will:
 
 * Build the Node.js backend image
 * Start the API server
-* Start MongoDB, PostgreSQL, and Redis containers
+* Start MongoDB
 * Configure internal networking between services
 
 Once running, the API will be available at:
