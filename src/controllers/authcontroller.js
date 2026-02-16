@@ -1,7 +1,8 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
-import { createAndSendOTP, verifyOTP } from '../services/otp.service.js';
+import { sendOtpEmail } from "../services/email.service.js";
+import { createAndStoreOtp, verifyStoredOtp } from "../services/otp.service.js";
 
 export const login = async (req, res) => {
   try {
@@ -58,33 +59,41 @@ export const login = async (req, res) => {
   }
 };
 
-export const sendOTP = async (req, res, next) => {
+export const sendOTP = async (req, res) => {
   try {
     const { email } = req.body;
 
-    await createAndSendOTP(email);
+    const otp = await createAndStoreOtp(email);
+    await sendOtpEmail(email, otp);
 
     res.status(200).json({
       success: true,
-      message: 'OTP sent successfully'
+      message: "OTP sent successfully"
     });
+
   } catch (error) {
-    next(error);
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
   }
 };
 
-
-export const validateOTP = async (req, res, next) => {
+export const verifyOTP = async (req, res) => {
   try {
     const { email, otp } = req.body;
 
-    await verifyOTP(email, otp);
+    await verifyStoredOtp(email, otp);
 
     res.status(200).json({
       success: true,
-      message: 'OTP verified successfully'
+      message: "OTP verified successfully"
     });
+
   } catch (error) {
-    next(error);
+    res.status(400).json({
+      success: false,
+      message: error.message
+    });
   }
 };
