@@ -2,6 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 
+import { globalLimiter } from './middleware/rateLimiter.js';
+
 import authRoutes from './routes/auth.routes.js';
 import paymentRoutes from './routes/payment.routes.js';
 import signupRoutes from './routes/signup.js';
@@ -42,6 +44,9 @@ app.get('/health', (_req, res) => {
     timestamp: new Date().toISOString()
   });
 });
+
+// Global limiter
+app.use(globalLimiter);
 
 app.use('/api/auth', authRoutes);
 app.use('/api/payment', paymentRoutes);

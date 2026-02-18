@@ -2,11 +2,12 @@ import express from 'express';
 import * as authController from '../controllers/authcontroller.js';
 import User from '../models/User.js';
 import bcrypt from 'bcrypt';
+import { otpLimiter } from '../middleware/rateLimiter.js';
 
 const router = express.Router();
 
 router.post('/login', authController.login);
-router.post('/send-otp', authController.sendOTP);
+router.post('/send-otp', otpLimiter,authController.sendOTP);
 router.post('/verify-otp', authController.validateOTP);
 
 router.get('/health', (req, res) => {
