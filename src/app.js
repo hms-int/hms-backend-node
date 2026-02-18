@@ -3,6 +3,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 
 import { globalLimiter } from './middleware/rateLimiter.js';
+import { errorHandler } from './middleware/errorHandler.js';
 
 import authRoutes from './routes/auth.routes.js';
 import paymentRoutes from './routes/payment.routes.js';
@@ -60,11 +61,13 @@ app.use('/api/patients', patientRoutes);
 app.use('/api/departments', deptRoutes);
 app.use('/api/appointments', appointmentRoutes);
 
-app.use((err, _req, res, _next) => {
-  console.error(err);
-  res.status(err.status || 500).json({
-    error: err.message || 'Internal Server Error'
+app.use((req, res, _next) => {
+  res.status(404).json({
+    success: false,
+    message: "Route not found"
   });
 });
+
+app.use(errorHandler);
 
 export default app;

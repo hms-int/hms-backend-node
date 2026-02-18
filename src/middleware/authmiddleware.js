@@ -14,33 +14,41 @@ const protect = (req, res, next) => {
 
       req.user = {
         id: decoded.id,
-        role: decoded.role,
+        role: decoded.role.toLowerCase(),
         email: decoded.email,
       };
 
       return next();
     } catch (error) {
-      if (error.name === "TokenExpiredError") {
-        return res.status(401).json({ message: "Token has expired" });
-      }
-      return res.status(401).json({ message: "Not authorized, token failed" });
+      return res.status(401).json({
+        success: false,
+        message:
+          error.name === "TokenExpiredError"
+            ? "Token has expired"
+            : "Invalid token",
+      });
     }
   }
 
-  return res.status(401).json({ message: "Not authorized, no token" });
+  return res.status(401).json({
+    success: false,
+    message: "Not authorized, no token",
+  });
 };
 
-
-const authorize = (...roles) => {
+export const authorize = (...roles) => {
   return (req, res, next) => {
-    if (!roles.includes(req.user.role)) {
-      return res
-        .status(403)
-        .json({ message: "You do not have permission to perform this action" });
+    const allowedRoles = Array.isArray(roles[0]) ? roles[0] : roles;
+
+    if (!req.user || !allowedRoles.includes(req.user.role)) {
+      return res.status(403).json({
+        success: false,
+        message: "Access denied",
+      });
     }
+
     next();
   };
 };
-
 
 export { protect, authorize };
