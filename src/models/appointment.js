@@ -22,8 +22,8 @@ const appointmentSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ['Scheduled', 'Completed', 'Cancelled'],
-      default: 'Scheduled',
+      enum: ['scheduled', 'completed', 'cancelled'],
+      default: 'scheduled',
       index: true
     },
     date: {
@@ -52,5 +52,7 @@ const appointmentSchema = new mongoose.Schema(
 
 appointmentSchema.index({ doctor: 1, date: 1 });
 appointmentSchema.index({ doctor: 1, date: 1, time: 1 }, { unique: true });
+appointmentSchema.index({ patient: 1});
+appointmentSchema.index({ status: 1});
 
 export default mongoose.model('Appointment', appointmentSchema);

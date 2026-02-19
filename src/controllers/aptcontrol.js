@@ -64,35 +64,83 @@ const getAppointmentById = async (req, res) => {
   }
 };
 
-const updateAppointment = async (req, res) => {
+const updateAppointment = async (req, res, next) => {
   try {
-    const { patient, dept, doctor } = req.body;
+    const { patient, dept, doctor, status } = req.body;
+
+    const appointment = await Appointment.findById(req.params.id);
+
+    if (!appointment) {
+      return res.status(404).json({
+        success: false,
+        message: "Appointment not found"
+      });
+    }
+
+    if (
+      req.user.role === "doctor" &&
+      appointment.doctor.toString() !== req.user.id
+    ) {
+      return res.status(403).json({
+        success: false,
+        message: "Not authorized to modify this appointment",
+      });
+    }
+
+    if (req.user.role === "doctor" && (doctor || dept)) {
+      return res.status(403).json({
+        success: false,
+        message: "Doctor cannot reassign appointment",
+      });
+    }
 
     if (patient || dept || doctor) {
       const checks = [];
       if (patient) checks.push(mongoose.model('Patient').findById(patient));
       if (dept) checks.push(mongoose.model('Department').findById(dept));
-      if (doctor) checks.push(mongoose.model('User').findOne({ _id: doctor, role: 'doctor' }));
+      if (doctor) checks.push(
+        mongoose.model('User').findOne({ _id: doctor, role: 'doctor' })
+      );
 
-      const [patientDoc, deptDoc, doctorDoc] = await Promise.all(checks);
+      const results = await Promise.all(checks);
 
-      if (patient && !patientDoc) return res.status(400).json({ message: 'Invalid patient ID' });
-      if (dept && !deptDoc) return res.status(400).json({ message: 'Invalid department ID' });
-      if (doctor && !doctorDoc) return res.status(400).json({ message: 'Invalid doctor ID or user is not a doctor' });
+      if (patient && !results[0])
+        return res.status(400).json({ success: false, message: 'Invalid patient ID' });
+
     }
 
-    const updatedAppointment = await Appointment.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true, runValidators: true }
-    );
+    if (status) {
+      const validTransitions = {
+        scheduled: ["completed", "cancelled"],
+        completed: [],
+        cancelled: []
+      };
 
-    if (!updatedAppointment) return res.status(404).json({ message: 'Appointment not found' });
+      const allowed = validTransitions[appointment.status] || [];
 
-    res.json(updatedAppointment);
+      if (!allowed.includes(status)) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid status transition"
+        });
+      }
+
+      appointment.status = status;
+    }
+
+    if (patient) appointment.patient = patient;
+    if (dept) appointment.dept = dept;
+    if (doctor) appointment.doctor = doctor;
+
+    await appointment.save();
+
+    res.status(200).json({
+      success: true,
+      data: appointment
+    });
+
   } catch (err) {
-    console.error('Error updating appointment:', err);
-    res.status(400).json({ message: err.message });
+    next(err);
   }
 };
 
