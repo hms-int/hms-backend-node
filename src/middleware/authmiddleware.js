@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 
-const protect = (req, res, next) => {
+export const protect = (req, res, next) => {
   let token;
 
   if (
@@ -50,5 +50,3 @@ export const authorize = (...roles) => {
     next();
   };
 };
-
-export { protect, authorize };
