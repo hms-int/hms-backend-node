@@ -12,6 +12,7 @@ import adminRoutes from './routes/adminroutes.js';
 
 import doctorRoutes from './routes/doctor.routes.js';
 import receptionRoutes from './routes/reception.routes.js';
+import billingRoutes from './routes/billing.routes.js';
 
 import patientRoutes from './routes/patient.js';
 import deptRoutes from './routes/dept.js';
@@ -56,6 +57,7 @@ app.use('/api/admin', adminRoutes);
 
 app.use('/api/users/doctors', doctorRoutes);
 app.use('/api/users/receptionist', receptionRoutes);
+app.use('/api/billing', billingRoutes);
 
 app.use('/api/patients', patientRoutes);
 app.use('/api/departments', deptRoutes);

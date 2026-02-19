@@ -45,4 +45,9 @@ const billingSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+billingSchema.index({ status: 1 });
+billingSchema.index({ patient: 1 });
+billingSchema.index({ createdAt: -1 });
+billingSchema.index({ status: 1, createdAt: -1 });
+
 export default mongoose.model("Billing", billingSchema);
