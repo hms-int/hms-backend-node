@@ -10,6 +10,7 @@ import paymentRoutes from './routes/payment.routes.js';
 import signupRoutes from './routes/signup.js';
 import adminRoutes from './routes/adminroutes.js';
 
+import dashboardRoutes from './routes/dashboard.routes.js';
 import doctorRoutes from './routes/doctor.routes.js';
 import receptionRoutes from './routes/reception.routes.js';
 import billingRoutes from './routes/billing.routes.js';
@@ -55,6 +56,7 @@ app.use('/api/payment', paymentRoutes);
 app.use('/api/signup', signupRoutes);
 app.use('/api/admin', adminRoutes);
 
+app.use('/api/admin/dashboard', dashboardRoutes);
 app.use('/api/users/doctors', doctorRoutes);
 app.use('/api/users/receptionist', receptionRoutes);
 app.use('/api/billing', billingRoutes);
