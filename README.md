@@ -1,39 +1,70 @@
-# HMS Backend (Node.js)
+Production-oriented Node.js backend for a Hospital Management System (HMS), built with structured role-based access control and real operational workflows in mind.
 
-Open-source Node.js backend for a Hospital Management System (HMS), designed around real hospital workflows and production constraints.
-
-This repository contains **only the Node.js / Express backend**.
+This repository contains **only the backend API layer** built using Express and MongoDB.
 
 ---
 
-## What’s Included
+## Overview
 
-* Node.js (Express) backend
-* JWT-based authentication with Role-Based Access Control (RBAC)
-* Core HMS APIs (Patient Registration, OPD, Basic IPD, Billing)
-* MongoDB
-* Security and validation middleware
-* **Docker & Docker Compose support for local development and deployment**
+The system supports:
+
+* Authentication with JWT
+* Role-Based Access Control (RBAC)
+* Doctor, Patient, Appointment management
+* Billing and Payment lifecycle
+* Admin analytics dashboard
+* Role-based reporting
+* Docker-based deployment
+
+The architecture follows a layered approach:
+
+```
+Routes → Controllers → Services → Models → MongoDB
+```
 
 ---
 
-## Not Included
+## Roles
 
-* Java Spring Boot backend
-* Advanced reporting and analytics
-* Proprietary or hospital-specific business logic
+The system supports the following roles:
+
+* **Admin (Superuser)**
+* **Doctor**
+* **Receptionist**
+* **Billing Staff**
+
+Access control is enforced at middleware level.
+
+Detailed RBAC specification is available in:
+
+```
+RBAC_SPEC.md
+```
 
 ---
+
+## Core Modules
+
+* Authentication
+* User Management
+* Doctors
+* Patients
+* Departments
+* Appointments (with conflict prevention)
+* Billing (pending → paid lifecycle)
+* Payments
+* Admin Dashboard
+* Reports
 
 ## Tech Stack
 
-* **Node.js**, **Express**
-* **MongoDB**
-* `bcrypt`, `jsonwebtoken`, `helmet`, `cors`
-* `dotenv`, `morgan`, `express-validator`
-* **Docker**, **Docker Compose**
-
----
+* Node.js
+* Express
+* MongoDB (Mongoose)
+* JWT Authentication
+* express-validator
+* Razorpay integration
+* Docker & Docker Compose
 
 ## Project Structure
 
@@ -44,32 +75,49 @@ src/
  ├── services/
  ├── routes/
  ├── models/
- ├── middlewares/
+ ├── middleware/
  ├── utils/
  └── app.js
 ```
 
 ---
 
-## Authentication
+## Key Features
 
-* JWT (HttpOnly cookies)
-* Role-Based Access Control
+### Authentication
 
-Roles:
+* JWT-based authentication
+* Bearer token authorization
+* Role enforcement middleware
 
-* Admin
-* Doctor
-* Reception
-* Billing staff
+### Appointment Safety
 
-RBAC is enforced at the middleware level.
+* Double-booking prevention
+* Status lifecycle enforcement
+
+### Billing System
+
+* Amount tracking
+* Payment status (pending / paid)
+* Revenue aggregation
+* Financial reporting
+
+### Admin Dashboard
+
+Provides:
+
+* Total doctors
+* Total patients
+* Total appointments
+* Total revenue
+* Pending revenue
+* Today’s appointments
 
 ---
 
 ## Running the Project
 
-### Option 1: Local Setup (Without Docker)
+### Local Setup
 
 ```bash
 git clone https://github.com/hms-int/hms-backend-node.git
@@ -87,38 +135,18 @@ http://localhost:5000
 
 ---
 
-### Option 2: Docker Compose (Recommended)
-
-The project now supports running the complete backend stack using **Docker Compose**, including MongoDB.
-
-#### Prerequisites
-
-* Docker
-* Docker Compose
-
-#### Steps
+### Docker Setup
 
 ```bash
-git clone https://github.com/hms-int/hms-backend-node.git
-cd hms-backend-node
-cp .env.example .env
 docker compose up --build
 ```
 
-This will:
+This starts:
 
-* Build the Node.js backend image
-* Start the API server
-* Start MongoDB
-* Configure internal networking between services
+* Node.js backend
+* MongoDB
 
-Once running, the API will be available at:
-
-```
-http://localhost:5000
-```
-
-To stop the containers:
+To stop:
 
 ```bash
 docker compose down
@@ -126,33 +154,26 @@ docker compose down
 
 ---
 
-## API Design Principles
+## API Principles
 
-* REST-based APIs
-* Stateless services
-* Validation at request entry points
-* Business logic isolated in services
-* Database access abstracted from controllers
-
----
-
-## Contributions
-
-Contributions are welcome and expected to follow basic discipline.
-
-* Fork the repository
-* Create a feature or fix branch
-* Make clear, atomic commits
-* Open a Pull Request with a concise explanation
-
-Keep changes minimal, readable, and documented.
+* REST-based
+* Stateless
+* Structured response format
+* Centralized error handling
+* Role-based route protection
 
 ---
 
-## License & Disclaimer
+## Health Check
 
-This repository is open source.
+```
+GET /health
+```
 
-Closed-source and proprietary components are intentionally excluded.
+---
 
-Ensure compliance with local medical data protection and healthcare regulations before any production deployment.
+## License
+
+Open-source.
+
+Ensure compliance with medical data regulations before production deployment.
