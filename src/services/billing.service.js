@@ -46,7 +46,7 @@ const updateBillingStaff = async (id, data) => {
     const billing = await User.findOneAndUpdate(
         { _id: id, role: 'billing' },
         data,
-        { new: true, runvalidators: true }
+        { new: true, runValidators: true }
     );
 
     if(!billing) throw new Error('Billing staff not found');

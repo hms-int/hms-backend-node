@@ -38,6 +38,10 @@ const getDoctors = async () => {
 };
 
 const updateDoctor = async (id, data) => {
+
+    if(data.workingHours){
+        throw new Error('User dedicated endpoint to update working hours');
+    }
     if(data.password) {
         data.password = await bcrypt.hash(data.password, 10);
     }
@@ -45,7 +49,7 @@ const updateDoctor = async (id, data) => {
     const doctor = await User.findOneAndUpdate(
         { _id: id, role: 'doctor' },
         data,
-        { new: true, runvalidators: true }
+        { new: true, runValidators: true }
     );
 
     if(!doctor) throw new Error('Doctor not found');
@@ -60,10 +64,29 @@ const deleteDoctor = async (id) => {
     return { message: 'Doctor deleted successfully' };
 };
 
+const updateWorkingHours = async (doctorId, workingHours) => {
+
+    const doctor = await User.findOne({
+        _id: doctorId,
+        role: 'doctor'
+    });
+
+    if (!doctor) throw new Error("Doctor not found");
+
+    doctor.workingHours = workingHours;
+
+    await doctor.save();
+
+    return {
+        message: "Working hours updated successfully"
+    };
+};
+
 export default{
   createDoctor,
   changePassword,
   getDoctors,
   updateDoctor,
-  deleteDoctor
+  deleteDoctor,
+  updateWorkingHours
 };

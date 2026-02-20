@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
+import User from '../models/User.js';
 
-export const protect = (req, res, next) => {
+export const protect = async (req, res, next) => {
   let token;
 
   if (
@@ -12,13 +13,30 @@ export const protect = (req, res, next) => {
 
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
+      const user = await User.findById(decoded.id).select('-password');
+
+      if (!user) {
+        return res.status(401).json({
+          success: false,
+          message: "User no longer exists",
+        });
+      }
+
+      if (user.status === 'Inactive') {
+        return res.status(401).json({
+          success: false,
+          message: "User account is inactive",
+        });
+      }
+
       req.user = {
-        id: decoded.id,
-        role: decoded.role.toLowerCase(),
-        email: decoded.email,
+        id: user._id,
+        role: user.role.toLowerCase(),
+        email: user.email,
       };
 
       return next();
+
     } catch (error) {
       return res.status(401).json({
         success: false,

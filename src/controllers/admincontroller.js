@@ -40,3 +40,22 @@ export const login = async (req, res) => {
     });
   }
 };
+
+export const updateDoctorWorkingHours = async (req, res) => {
+    try {
+
+        if (req.user.role !== 'admin') {
+            return res.status(403).json({ message: "Access denied" });
+        }
+
+        const result = await doctorService.updateWorkingHours(
+            req.params.id,
+            req.body.workingHours
+        );
+
+        res.status(200).json(result);
+
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+};

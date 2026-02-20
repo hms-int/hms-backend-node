@@ -12,6 +12,12 @@ router.put('/change-password', protect, authorize('doctor'), doctorController.ch
 
 router.put('/:id', protect, authorize('admin'), doctorController.updateDoctor);
 
+router.put('/me/working-hours',
+    protect,
+    authorize('doctor'),
+    doctorController.updateMyWorkingHours
+);
+
 router.delete('/:id', protect, authorize('admin'), doctorController.deleteDoctor);
 
 export default router;

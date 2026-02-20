@@ -50,11 +50,31 @@ const deleteDoctor = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+const updateMyWorkingHours = async (req, res) => {
+    try {
+
+        if (req.user.role !== 'doctor') {
+            return res.status(403).json({ message: "Access denied" });
+        }
+
+        const result = await doctorService.updateWorkingHours(
+            req.user.id,
+            req.body.workingHours
+        );
+
+        res.status(200).json(result);
+
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+}
   
 export {
   createDoctor,
   changePassword,
   getDoctors,
   updateDoctor,
-  deleteDoctor
+  deleteDoctor,
+  updateMyWorkingHours
 };
