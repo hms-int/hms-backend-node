@@ -1,5 +1,5 @@
 import express from 'express';
-import { protect, authorize } from '../middleware/authMiddleware.js';
+import { protect, authorize } from '../middleware/authmiddleware.js';
 import * as appointmentController from '../controllers/aptcontrol.js';
 
 const router = express.Router();
