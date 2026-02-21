@@ -1,10 +1,10 @@
 import express from 'express';
-import { protect, authorize } from '../middleware/authmiddleware.js';
+import { protect, authorize } from '../middleware/authMiddleware.js';
 import * as doctorController from '../controllers/doctor.controller.js';
 
 const router = express.Router();
 
-router.post('/', protect, authorize('admin'), doctorController.createDoctor);
+router.post('/', protect, authorize(['admin']), doctorController.createDoctor);
 
 router.get('/', protect, authorize('admin', 'doctor'), doctorController.getDoctors);
 

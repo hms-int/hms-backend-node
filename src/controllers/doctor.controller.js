@@ -1,11 +1,11 @@
 import doctorService from '../services/doctor.service.js';
 
-const createDoctor = async (req, res) => {
+const createDoctor = async (req, res, next) => {
   try {
     const doctor = await doctorService.createDoctor(req.body);
     res.status(201).json(doctor);
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    next(err)
   }
 };
 

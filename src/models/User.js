@@ -31,10 +31,10 @@ const workingDaySchema = new mongoose.Schema({
   }
 }, { _id: false });
 
-workingDaySchema.pre('validate', function(next) {
+workingDaySchema.pre('validate', function() {
 
   if (!this.isAvailable && this.slots.length > 0) {
-    return next(new Error("Slots cannot exist when doctor is unavailable"));
+    return new Error("Slots cannot exist when doctor is unavailable");
   }
 
   const sorted = [...this.slots].sort((a, b) =>
@@ -44,15 +44,13 @@ workingDaySchema.pre('validate', function(next) {
   for (let i = 0; i < sorted.length; i++) {
 
     if (sorted[i].startTime >= sorted[i].endTime) {
-      return next(new Error("Start time must be before end time"));
+      return new Error("Start time must be before end time");
     }
 
     if (i > 0 && sorted[i - 1].endTime > sorted[i].startTime) {
-      return next(new Error("Overlapping time slots detected"));
+      return new Error("Overlapping time slots detected");
     }
   }
-
-  next();
 });
 
 const DEFAULT_WORKING_HOURS = [
@@ -115,29 +113,24 @@ const userSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 
-userSchema.pre('validate', function(next) {
+userSchema.pre('validate', function() {
 
   if (this.role === 'doctor' && this.workingHours) {
     const days = this.workingHours.map(d => d.day);
     const uniqueDays = new Set(days);
 
     if (days.length !== uniqueDays.size) {
-      return next(new Error("Duplicate days are not allowed"));
+      return new Error("Duplicate days are not allowed");
     }
   }
-
-  next();
 });
 
-userSchema.pre('save', function(next) {
+userSchema.pre('save', function() {
 
   if (this.role === 'doctor' && (!this.workingHours || this.workingHours.length === 0)) {
     this.workingHours = DEFAULT_WORKING_HOURS;
   }
-
-  next();
 });
-
 
 const User = mongoose.models.User || mongoose.model('User', userSchema);
 export default User;

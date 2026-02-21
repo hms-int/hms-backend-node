@@ -9,10 +9,19 @@ email:{
     },
 phno:{ 
     type: String, 
-    required:true,
+    required: true,
     match:/^[0-9]{10}$/
     },
-age:{type:Number, required:true},
+age:{
+    type:Number, 
+    required: true,
+    min: [0, "Age cannot be negative"],
+    max: [150, "Age cannot exceed 150"],
+    validate: {
+        validator: Number.isInteger,
+        message: "Age must be a whole number"
+    }
+},
 gender: {
     type:String, 
     enum:['male','female','other'],
