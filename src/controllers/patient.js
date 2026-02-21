@@ -6,7 +6,7 @@ const createPatient = async (req, res) => {
     await patient.save();
     res.status(201).json(patient);
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    next(err);
   }
 };
 
@@ -15,7 +15,7 @@ const getPatients = async (req, res) => {
     const patients = await Patient.find();
     res.json(patients);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    next(err);
   }
 };
 
@@ -29,12 +29,14 @@ const updatePatient = async (req, res) => {
     });
 
     if (!patient) {
-      return res.status(404).json({ message: 'Patient not found' });
+      const error = new Error('Patient not found');
+      error.statusCode = 404;
+      return next(error);
     }
 
     res.json(patient);
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    next(err);
   }
 };
 
@@ -45,12 +47,14 @@ const deletePatient = async (req, res) => {
     const patient = await Patient.findByIdAndDelete(id);
 
     if (!patient) {
-      return res.status(404).json({ message: 'Patient not found' });
+      const error = new Error('Patient not found');
+      error.statusCode = 404;
+      return next(error);
     }
 
     res.json({ message: 'Patient deleted successfully' });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    next(err);
   }
 };
 

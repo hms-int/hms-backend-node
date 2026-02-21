@@ -2,7 +2,7 @@ import User from '../models/User.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
-export const login = async (req, res) => {
+export const login = async (req, res, next) => {
   try {
     const { role, email, password } = req.body;
 
@@ -12,12 +12,16 @@ export const login = async (req, res) => {
     });
 
     if (!user) {
-      return res.status(401).json({ message: 'Invalid role or email' });
+      const error = new Error("Invalid role or email");
+      error.statusCode = 401;
+      return next(error);
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(401).json({ message: 'Invalid password' });
+      const error = new Error("Invalid credentials");
+      error.statusCode = 401;
+      return next(error);
     }
 
     const token = jwt.sign(
@@ -33,19 +37,17 @@ export const login = async (req, res) => {
       token,
     });
   } catch (error) {
-    console.error('Login error:', error);
-    res.status(500).json({
-      message: 'Server error',
-      error: error.message,
-    });
+    next(error);
   }
 };
 
-export const updateDoctorWorkingHours = async (req, res) => {
+export const updateDoctorWorkingHours = async (req, res, next) => {
     try {
 
         if (req.user.role !== 'admin') {
-            return res.status(403).json({ message: "Access denied" });
+            const error = new Error("Access denied");
+            error.statusCode = 403;
+            return next(error);
         }
 
         const result = await doctorService.updateWorkingHours(
@@ -56,6 +58,6 @@ export const updateDoctorWorkingHours = async (req, res) => {
         res.status(200).json(result);
 
     } catch (error) {
-        res.status(400).json({ message: error.message });
+        next(error);
     }
 };
