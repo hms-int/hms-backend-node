@@ -63,6 +63,7 @@ describe('HMS Billing Flow Integration', () => {
         patient: patientId,
         amount: 500,
         status: 'pending',
+        paymentMode: 'cash',
         items: [{ desc: 'Consultation', price: 500 }]
       });
 

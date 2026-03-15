@@ -59,7 +59,8 @@ describe('Billing Integration Tests', () => {
         .set('Authorization', `Bearer ${adminToken}`)
         .send({
           patient: 'patId',
-          amount: 1500
+          amount: 1500,
+          paymentMode: 'cash',
           // appointment is optional per controller
         });
 
