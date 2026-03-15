@@ -5,12 +5,14 @@ import * as patientController from '../controllers/patient.js';
 const router = express.Router();
 
 
-router.get('/', protect, authorize('admin', 'doctor','receptionist'), patientController.getPatients);
+router.get('/', protect, authorize('admin', 'doctor', 'receptionist','billing'), patientController.getPatients);
 
-router.post('/', protect, authorize('admin', 'doctor','receptionist'), patientController.createPatient);
+router.get('/:id', protect, authorize('admin', 'doctor', 'receptionist','billing'), patientController.getPatientById);
 
-router.put('/:id', protect, authorize('admin', 'doctor','receptionist'), patientController.updatePatient);
+router.post('/', protect, authorize('admin', 'doctor', 'receptionist','billing'), patientController.createPatient);
 
-router.delete('/:id', protect, authorize('admin','receptionist'), patientController.deletePatient);
+router.put('/:id', protect, authorize('admin', 'doctor', 'receptionist','billing'), patientController.updatePatient);
+
+router.delete('/:id', protect, authorize('admin'), patientController.deletePatient);
 
 export default router;
