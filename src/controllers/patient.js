@@ -1,10 +1,22 @@
 import Patient from '../models/patient.js';
+import { createPatientPortalAccount } from '../services/patientPortal.service.js';
 
 const createPatient = async (req, res, next) => {
   try {
     const patient = new Patient(req.body);
     await patient.save();
-    res.status(201).json(patient);
+
+    const { email, paymentMethod } = req.body;
+
+    if (paymentMethod === "online" && email) {
+      await createPatientPortalAccount(email);
+    }
+
+    res.status(201).json({
+      success: true,
+      patient
+    });
+
   } catch (err) {
     next(err);
   }
