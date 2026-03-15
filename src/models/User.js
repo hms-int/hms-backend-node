@@ -90,11 +90,7 @@ const userSchema = new mongoose.Schema({
   role: { 
     type: String, 
     required: true, 
-<<<<<<< HEAD
     enum: ['admin', 'doctor','receptionist','billing','patient'] 
-=======
-    enum: ['admin', 'doctor','receptionist','billing', 'patient'] 
->>>>>>> recovery-branch
   },
 
   name: { type: String },
