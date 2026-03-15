@@ -5,7 +5,7 @@ const createDoctor = async (req, res, next) => {
     const doctor = await doctorService.createDoctor(req.body);
     res.status(201).json(doctor);
   } catch (err) {
-    next(err)
+    res.status(400).json({ message: err.message });
   }
 };
 

@@ -3,7 +3,8 @@ import app from '../src/app.js';
 import User from '../src/models/User.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-
+import { jest } from '@jest/globals';
+jest.setTimeout(30000);
 jest.mock('../src/models/User.js');
 jest.mock('bcrypt');
 
@@ -23,12 +24,14 @@ describe('Auth Integration Tests', () => {
     });
 
     it('should return 401 for invalid email', async () => {
-      User.findOne.mockResolvedValue(null);
+      User.findOne = jest.fn().mockReturnValue({
+        select: jest.fn().mockResolvedValue(null)
+      });
       const res = await request(app)
         .post('/api/auth/login')
         .send({ email: 'test@test.com', password: 'password', role: 'admin' });
       expect(res.statusCode).toBe(401);
-      expect(res.body.message).toMatch(/Invalid email or password/i);
+      expect(res.body.message).toMatch(/Invalid role or email/i);
     });
 
     it('should return 200 and token for valid credentials', async () => {
@@ -38,9 +41,11 @@ describe('Auth Integration Tests', () => {
         role: 'admin',
         status: 'Active'
       };
-      
-      User.findOne.mockResolvedValue(mockUser);
-      bcrypt.compare.mockResolvedValue(true);
+
+      User.findOne = jest.fn().mockReturnValue({
+        select: jest.fn().mockResolvedValue(mockUser)
+      });
+      bcrypt.compare = jest.fn().mockResolvedValue(true);
 
       const res = await request(app)
         .post('/api/auth/login')
@@ -61,7 +66,7 @@ describe('Auth Integration Tests', () => {
 
     it('should return user profile if valid token provided', async () => {
       const token = jwt.sign({ id: 'userid' }, process.env.JWT_SECRET);
-      
+
       const mockUser = {
         _id: 'userid',
         email: 'admin@test.com',

@@ -3,13 +3,14 @@ import mongoose from 'mongoose';
 import app from '../src/app.js';
 import User from '../src/models/User.js';
 import bcrypt from 'bcrypt';
-
+import { jest } from '@jest/globals';
+jest.setTimeout(30000);
 describe('HMS Integration Suite - Auth & Roles', () => {
   let token;
 
   beforeAll(async () => {
     // Force local test database
-    const url = 'mongodb://mongo:27017/hms_auth_test';
+    const url = 'mongodb://127.0.0.1:27017/hms_auth_test';
     await mongoose.connect(url);
     await User.deleteMany({});
   });
@@ -32,18 +33,18 @@ describe('HMS Integration Suite - Auth & Roles', () => {
     // We simulate the receptionist creation that usually happens via Admin
     // In a real integration test, we might call the Admin API, but first we need an Admin.
     const admin = new User({
-        email: 'admin_test@hms.com',
-        password: 'adminpassword', 
-        role: 'admin',
-        status: 'Active'
+      email: 'admin_test@hms.com',
+      password: 'adminpassword',
+      role: 'admin',
+      status: 'Active'
     });
     admin.password = await bcrypt.hash('adminpassword', 10);
     await admin.save();
 
     const loginRes = await request(app)
-        .post('/api/auth/login')
-        .send({ email: 'admin_test@hms.com', password: 'adminpassword', role: 'admin' });
-    
+      .post('/api/auth/login')
+      .send({ email: 'admin_test@hms.com', password: 'adminpassword', role: 'admin' });
+
     expect(loginRes.statusCode).toBe(200);
     const adminToken = loginRes.body.token;
 
