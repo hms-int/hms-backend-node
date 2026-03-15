@@ -61,3 +61,32 @@ export const sendOTPEmail = async (email, otp) => {
     `
   });
 };
+
+export const sendCredentialsEmail = async (email, password) => {
+  await transporter.sendMail({
+    from: `"HMS Team" <${process.env.GMAIL_EMAIL}>`,
+    to: email,
+    subject: "Your HMS Patient Portal Login Credentials",
+
+    html: `
+      <div style="font-family: Arial; padding:20px;">
+        <h2>Welcome to HMS Portal</h2>
+
+        <p>Your account has been created successfully.</p>
+
+        <p><b>Email:</b> ${email}</p>
+        <p><b>Password:</b> ${password}</p>
+
+        <p>Please login and change your password immediately.</p>
+
+        <p>Login Link: <a href="https://hms-app/login">Login</a></p>
+
+        <hr/>
+
+        <p style="font-size:12px;color:#888;">
+        This email was generated automatically.
+        </p>
+      </div>
+    `
+  });
+};
