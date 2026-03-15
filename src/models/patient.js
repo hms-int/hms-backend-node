@@ -32,6 +32,11 @@ status:{
     default:'active',
     required:true
 },
+  paymentMethod: {
+    type: String,
+    enum: ['cash', 'online'],
+    default: 'cash'
+  },
 bg:{
     type: String,
     enum:['A+','A-','B+','B-','AB+','AB-','O+','O-']
