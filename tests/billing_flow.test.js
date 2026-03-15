@@ -68,7 +68,7 @@ describe('HMS Billing Flow Integration', () => {
       });
 
     expect([200, 201]).toContain(res.statusCode);
-    billId = res.body.data?._id || res.body._id;
+    billId = res.body._id;
     expect(billId).toBeDefined();
   });
 
@@ -91,7 +91,7 @@ describe('HMS Billing Flow Integration', () => {
       });
 
     expect(res.statusCode).toBe(200);
-    const updatedBill = res.body.data || res.body;
+    const updatedBill = res.body;
     expect(updatedBill.status).toBe('paid');
   });
 });
