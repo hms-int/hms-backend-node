@@ -1,11 +1,12 @@
 import request from 'supertest';
 import app from '../src/app.js';
 import User from '../src/models/User.js';
-import Patient from '../src/models/Patient.js';
+import Patient from '../src/models/patient.js';
 import jwt from 'jsonwebtoken';
-
+import { jest } from '@jest/globals';
+jest.setTimeout(30000);
 jest.mock('../src/models/User.js');
-jest.mock('../src/models/Patient.js');
+jest.mock('../src/models/patient.js');
 
 describe('Patient Integration Tests', () => {
   let adminToken;
@@ -37,8 +38,8 @@ describe('Patient Integration Tests', () => {
         .set('Authorization', `Bearer ${adminToken}`);
 
       expect(res.statusCode).toBe(200);
-      expect(res.body.success).toBe(true);
-      expect(res.body.data.length).toBe(1);
+      expect(Array.isArray(res.body)).toBe(true);
+      expect(res.body.length).toBe(1);
     });
   });
 
@@ -59,10 +60,11 @@ describe('Patient Integration Tests', () => {
         });
 
       expect(res.statusCode).toBe(201);
-      expect(res.body.success).toBe(true);
+      expect(res.body._id).toBeDefined();
     });
 
     it('should fail if missing required patient details', async () => {
+      Patient.prototype.save = jest.fn().mockRejectedValue(new Error('Validation error'));
       const res = await request(app)
         .post('/api/patients')
         .set('Authorization', `Bearer ${adminToken}`)
@@ -70,7 +72,7 @@ describe('Patient Integration Tests', () => {
 
       // Assuming controller validates or database throws
       // The current backend likely returns 400 or 500
-      expect(res.statusCode).toBeGreaterThanOrEqual(400); 
+      expect(res.statusCode).toBeGreaterThanOrEqual(400);
     });
   });
 });

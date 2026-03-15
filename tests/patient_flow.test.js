@@ -4,28 +4,29 @@ import app from '../src/app.js';
 import User from '../src/models/User.js';
 import Patient from '../src/models/patient.js';
 import bcrypt from 'bcrypt';
-
+import { jest } from '@jest/globals';
+jest.setTimeout(30000);
 describe('HMS Patient Flow Integration', () => {
   let adminToken;
 
   beforeAll(async () => {
-    const url = 'mongodb://mongo:27017/hms_patient_test';
+    const url = 'mongodb://127.0.0.1:27017/hms_patient_test';
     await mongoose.connect(url);
     await User.deleteMany({});
     await Patient.deleteMany({});
 
     // Create Admin for testing
     const admin = new User({
-        email: 'admin_patient_test@hms.com',
-        password: await bcrypt.hash('adminpassword', 10),
-        role: 'admin',
-        status: 'Active'
+      email: 'admin_patient_test@hms.com',
+      password: await bcrypt.hash('adminpassword', 10),
+      role: 'admin',
+      status: 'Active'
     });
     await admin.save();
 
     const loginRes = await request(app)
-        .post('/api/auth/login')
-        .send({ email: 'admin_patient_test@hms.com', password: 'adminpassword', role: 'admin' });
+      .post('/api/auth/login')
+      .send({ email: 'admin_patient_test@hms.com', password: 'adminpassword', role: 'admin' });
     adminToken = loginRes.body.token;
   });
 

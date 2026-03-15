@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
+import { jest } from '@jest/globals';
 
 dotenv.config();
 
@@ -25,14 +26,14 @@ async function test() {
   const pass = 'reception@123';
   const role = 'receptionist';
 
-  const user = await User.findOne({ 
-      email: { $regex: new RegExp(`^${email}$`, 'i') },
-      role: { $regex: new RegExp(`^${role}$`, 'i') }
+  const user = await User.findOne({
+    email: { $regex: new RegExp(`^${email}$`, 'i') },
+    role: { $regex: new RegExp(`^${role}$`, 'i') }
   });
 
   const testEmail = `reception_test_${Date.now()}@test.com`;
   const testPass = 'reception@123';
-  
+
   console.log(`\nCreating fresh test user: ${testEmail}`);
   const hashed = await bcrypt.hash(testPass, 10);
   const newUser = new User({
@@ -49,9 +50,9 @@ async function test() {
   console.log(`Verification of fresh user login: ${isMatchNew ? 'SUCCESS' : 'FAILED'}`);
 
   if (isMatchNew) {
-      console.log('Rounding check:');
-      const matchWith10 = await bcrypt.compare(testPass, fetchedUser.password);
-      console.log('Compare again:', matchWith10);
+    console.log('Rounding check:');
+    const matchWith10 = await bcrypt.compare(testPass, fetchedUser.password);
+    console.log('Compare again:', matchWith10);
   }
 
   // Cleanup
@@ -62,6 +63,6 @@ async function test() {
 }
 
 test().catch(err => {
-    console.error('TEST FAILED:', err);
-    process.exit(1);
+  console.error('TEST FAILED:', err);
+  process.exit(1);
 });
